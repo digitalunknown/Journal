@@ -16,6 +16,11 @@
 		FF6C71FB2C778DA000DD35E5 /* JournalDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C71FA2C778DA000DD35E5 /* JournalDetailView.swift */; };
 		FF6C71FD2C778DB200DD35E5 /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C71FC2C778DB200DD35E5 /* JournalViewModel.swift */; };
 		FF6C71FF2C778DC200DD35E5 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C71FE2C778DC200DD35E5 /* JournalView.swift */; };
+		FF6C72092C78D70D00DD35E5 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C72082C78D70D00DD35E5 /* ImagePicker.swift */; };
+		FF6C720B2C791C8A00DD35E5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C720A2C791C8A00DD35E5 /* SearchBar.swift */; };
+		FF6C720D2C791D8100DD35E5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C720C2C791D8100DD35E5 /* CardView.swift */; };
+		FF6C720F2C79256700DD35E5 /* JournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C720E2C79256700DD35E5 /* JournalEntryModel.swift */; };
+		FF6C72112C7925F800DD35E5 /* ImageSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6C72102C7925F800DD35E5 /* ImageSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +53,11 @@
 		FF6C71FA2C778DA000DD35E5 /* JournalDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDetailView.swift; sourceTree = "<group>"; };
 		FF6C71FC2C778DB200DD35E5 /* JournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
 		FF6C71FE2C778DC200DD35E5 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		FF6C72082C78D70D00DD35E5 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		FF6C720A2C791C8A00DD35E5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		FF6C720C2C791D8100DD35E5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		FF6C720E2C79256700DD35E5 /* JournalEntryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryModel.swift; sourceTree = "<group>"; };
+		FF6C72102C7925F800DD35E5 /* ImageSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,10 +108,14 @@
 		FF6C71CF2C778C9000DD35E5 /* Journal */ = {
 			isa = PBXGroup;
 			children = (
+				FF6C72122C79276200DD35E5 /* Models */,
 				FF6C71D02C778C9000DD35E5 /* JournalApp.swift */,
 				FF6C71FA2C778DA000DD35E5 /* JournalDetailView.swift */,
-				FF6C71FC2C778DB200DD35E5 /* JournalViewModel.swift */,
 				FF6C71FE2C778DC200DD35E5 /* JournalView.swift */,
+				FF6C72082C78D70D00DD35E5 /* ImagePicker.swift */,
+				FF6C720A2C791C8A00DD35E5 /* SearchBar.swift */,
+				FF6C720C2C791D8100DD35E5 /* CardView.swift */,
+				FF6C72102C7925F800DD35E5 /* ImageSheetView.swift */,
 				FF6C71D42C778C9100DD35E5 /* Assets.xcassets */,
 				FF6C71D62C778C9100DD35E5 /* Preview Content */,
 			);
@@ -131,6 +145,15 @@
 				FF6C71ED2C778C9200DD35E5 /* JournalUITestsLaunchTests.swift */,
 			);
 			path = JournalUITests;
+			sourceTree = "<group>";
+		};
+		FF6C72122C79276200DD35E5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FF6C720E2C79256700DD35E5 /* JournalEntryModel.swift */,
+				FF6C71FC2C778DB200DD35E5 /* JournalViewModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,10 +286,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF6C72112C7925F800DD35E5 /* ImageSheetView.swift in Sources */,
+				FF6C720F2C79256700DD35E5 /* JournalEntryModel.swift in Sources */,
+				FF6C720D2C791D8100DD35E5 /* CardView.swift in Sources */,
 				FF6C71FD2C778DB200DD35E5 /* JournalViewModel.swift in Sources */,
 				FF6C71FF2C778DC200DD35E5 /* JournalView.swift in Sources */,
+				FF6C72092C78D70D00DD35E5 /* ImagePicker.swift in Sources */,
 				FF6C71FB2C778DA000DD35E5 /* JournalDetailView.swift in Sources */,
 				FF6C71D12C778C9000DD35E5 /* JournalApp.swift in Sources */,
+				FF6C720B2C791C8A00DD35E5 /* SearchBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

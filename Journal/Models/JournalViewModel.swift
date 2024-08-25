@@ -55,7 +55,7 @@ class JournalViewModel: ObservableObject {
 
         for date in dates {
             if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
-                let newEntry = JournalEntry(date: date, text: "", emoji: "", imageFileNames: [])
+                let newEntry = JournalEntry(id: UUID(), date: date, text: "", emoji: "", imageFileNames: [])
                 journalEntries.append(newEntry)
             }
         }

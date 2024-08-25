@@ -9,13 +9,22 @@ import SwiftUI
 
 struct JournalView: View {
     @StateObject private var viewModel = JournalViewModel()
-    
+    @State private var searchText = ""
+    @State private var isSearching = false
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
-                    ForEach($viewModel.journalEntries) { $entry in // Note the use of $ to pass a binding
-                        NavigationLink(destination: JournalDetailView(entry: $entry, viewModel: viewModel)) {
+                    // Conditionally show the search bar
+                    if isSearching {
+                        SearchBar(text: $searchText)
+                            .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
+                    }
+
+                    // List of journal entries (including placeholders)
+                    ForEach(filteredEntries, id: \.id) { entry in
+                        NavigationLink(destination: JournalDetailView(entry: binding(for: entry), viewModel: viewModel)) {
                             CardView(entry: entry)
                         }
                     }
@@ -24,40 +33,34 @@ struct JournalView: View {
                 .padding(.top, 10)
             }
             .navigationTitle("Journal")
+            .navigationBarItems(trailing: Button(action: {
+                withAnimation {
+                    isSearching.toggle()
+                }
+            }) {
+                Image(systemName: "magnifyingglass")
+                    .imageScale(.large)
+            })
         }
     }
-}
 
-struct CardView: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
-    
-    var entry: JournalEntry
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack {
-                Text(entry.date, style: .date)
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                
-                Spacer() // Keeps the date and emoji on opposite ends
-
-                Text(entry.emoji) // Display the selected emoji
-                    .font(.title2)
-            }
-
-            if !entry.text.isEmpty {
-                Text(entry.text)
-                    .lineLimit(3)
-                    .font(.body)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)  // Correct usage here
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .multilineTextAlignment(.leading)
+    // Filter entries based on search text
+    var filteredEntries: [JournalEntry] {
+        if searchText.isEmpty {
+            return viewModel.journalEntries
+        } else {
+            return viewModel.journalEntries.filter { entry in
+                entry.text.lowercased().contains(searchText.lowercased()) ||
+                entry.date.formatted(date: .abbreviated, time: .omitted).contains(searchText)
             }
         }
-        .padding()
-        .background(Color(UIColor.systemGray6))
-        .cornerRadius(12)
+    }
+
+    // Helper function to get binding for a journal entry
+    private func binding(for entry: JournalEntry) -> Binding<JournalEntry> {
+        guard let index = viewModel.journalEntries.firstIndex(where: { $0.id == entry.id }) else {
+            fatalError("Entry not found")
+        }
+        return $viewModel.journalEntries[index]
     }
 }
-

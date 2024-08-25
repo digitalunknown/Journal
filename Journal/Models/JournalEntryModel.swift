@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct JournalEntry: Identifiable, Codable {
-    let id = UUID()
+    var id: UUID
     let date: Date
     var text: String
     var emoji: String = ""  // Default emoji

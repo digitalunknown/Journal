@@ -12,6 +12,7 @@ struct JournalApp: App {
     var body: some Scene {
         WindowGroup {
             JournalView()
+                .accentColor(.orange)
         }
     }
 }
