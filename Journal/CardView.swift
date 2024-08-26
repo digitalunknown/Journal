@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CardView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    
-    var entry: JournalEntry
+    @Binding var entry: JournalEntry
+    var clearDayAction: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -29,13 +29,20 @@ struct CardView: View {
                 Text(entry.text)
                     .lineLimit(3)
                     .font(.body)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)  // Correct usage here
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .multilineTextAlignment(.leading)
             }
+
         }
         .padding()
-        .background(Color(UIColor.systemGray6))  // Slightly darker gray than search bar
+        .background(Color(UIColor.systemGray6))
         .cornerRadius(12)
+        .contextMenu {
+            Button(action: clearDayAction) {
+                Text("Clear this day")
+                Image(systemName: "trash")
+            }
+        }
     }
 }

@@ -47,11 +47,19 @@ class JournalViewModel: ObservableObject {
         saveEntries()
     }
 
-    // Ensure that there are 30 days displayed, even if there are no entries
+    func clearDay(_ entry: JournalEntry) {
+        if let index = journalEntries.firstIndex(where: { $0.id == entry.id }) {
+            journalEntries[index].text = ""
+            journalEntries[index].emoji = ""
+            journalEntries[index].imageFileNames = []
+            saveEntries()
+        }
+    }
+
     private func ensure30Days() {
         let today = Date()
         let calendar = Calendar.current
-        var dates = (0..<30).map { calendar.date(byAdding: .day, value: -$0, to: today)! }
+        let dates = (0..<30).map { calendar.date(byAdding: .day, value: -$0, to: today)! }
 
         for date in dates {
             if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
@@ -60,7 +68,6 @@ class JournalViewModel: ObservableObject {
             }
         }
 
-        // Sort the entries by date in descending order, so today is at the top
         journalEntries.sort { $0.date > $1.date }
     }
 }

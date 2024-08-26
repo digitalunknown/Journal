@@ -1,5 +1,5 @@
 //
-//  JournalEntry.swift
+//  JournalDetailView.swift
 //  Journal
 //
 //  Created by Piotr Osmenda on 8/22/24.
