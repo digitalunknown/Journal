@@ -15,9 +15,11 @@ class JournalViewModel: ObservableObject {
     }
     
     private let userDefaultsKey = "JournalEntries"
+    private var timer: Timer?
 
     init() {
         loadEntries()
+        startDailyCheckTimer()
     }
 
     func loadEntries() {
@@ -49,9 +51,8 @@ class JournalViewModel: ObservableObject {
 
     func clearDay(_ entry: JournalEntry) {
         if let index = journalEntries.firstIndex(where: { $0.id == entry.id }) {
-            journalEntries[index].text = ""
+            journalEntries[index].contentBlocks = []
             journalEntries[index].emoji = ""
-            journalEntries[index].imageFileNames = []
             saveEntries()
         }
     }
@@ -63,11 +64,46 @@ class JournalViewModel: ObservableObject {
 
         for date in dates {
             if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
-                let newEntry = JournalEntry(id: UUID(), date: date, text: "", emoji: "", imageFileNames: [])
+                let newEntry = JournalEntry(id: UUID(), date: date, contentBlocks: [], emoji: "")
                 journalEntries.append(newEntry)
             }
         }
 
         journalEntries.sort { $0.date > $1.date }
+    }
+
+    // Start a timer to check for a new day at midnight
+    private func startDailyCheckTimer() {
+        let calendar = Calendar.current
+        let now = Date()
+        var midnightComponents = calendar.dateComponents([.year, .month, .day], from: now)
+        midnightComponents.hour = 0
+        midnightComponents.minute = 0
+        midnightComponents.second = 0
+
+        guard let midnight = calendar.date(from: midnightComponents) else {
+            return
+        }
+
+        let nextMidnight = calendar.date(byAdding: .day, value: 1, to: midnight)!
+        let timeInterval = nextMidnight.timeIntervalSince(now)
+
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] _ in
+            self?.addNewDayIfNeeded()
+            self?.startDailyCheckTimer() // Restart the timer for the next day
+        }
+    }
+
+    // Add a new day entry if today's entry is not already present
+    private func addNewDayIfNeeded() {
+        let today = Date()
+        let calendar = Calendar.current
+
+        if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: today) }) {
+            let newEntry = JournalEntry(id: UUID(), date: today, contentBlocks: [], emoji: "")
+            journalEntries.append(newEntry)
+            journalEntries.sort { $0.date > $1.date }
+            saveEntries()
+        }
     }
 }
