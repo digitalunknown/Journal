@@ -51,9 +51,10 @@ class JournalViewModel: ObservableObject {
 
     func clearDay(_ entry: JournalEntry) {
         if let index = journalEntries.firstIndex(where: { $0.id == entry.id }) {
-            journalEntries[index].contentBlocks = []
-            journalEntries[index].emoji = ""
-            saveEntries()
+            journalEntries[index].text = ""  // Clear the text
+            journalEntries[index].images.removeAll()  // Clear the images
+            journalEntries[index].emoji = ""  // Clear the emoji
+            saveEntries()  // Save the updated journal entries
         }
     }
 
@@ -64,7 +65,7 @@ class JournalViewModel: ObservableObject {
 
         for date in dates {
             if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
-                let newEntry = JournalEntry(id: UUID(), date: date, contentBlocks: [], emoji: "")
+                let newEntry = JournalEntry(date: date, text: "", emoji: "", imageFileNames: [])
                 journalEntries.append(newEntry)
             }
         }
@@ -100,7 +101,7 @@ class JournalViewModel: ObservableObject {
         let calendar = Calendar.current
 
         if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: today) }) {
-            let newEntry = JournalEntry(id: UUID(), date: today, contentBlocks: [], emoji: "")
+            let newEntry = JournalEntry(date: today, text: "", emoji: "", imageFileNames: [])
             journalEntries.append(newEntry)
             journalEntries.sort { $0.date > $1.date }
             saveEntries()

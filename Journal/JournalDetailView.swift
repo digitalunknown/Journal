@@ -69,11 +69,6 @@ struct JournalDetailView: View {
         .sheet(isPresented: $showingImagePicker, onDismiss: {
             viewModel.updateEntry(entry)  // Save the entry after adding images
         }) {
-            MultiImagePicker(images: $entry.images, maxSelection: 3 - entry.images.count)
-        }
-        .onDisappear {
-            viewModel.updateEntry(entry)  // Save the entry when the view disappears
         }
     }
 }
-
