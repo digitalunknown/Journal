@@ -10,9 +10,8 @@ import PhotosUI
 
 struct MultiImagePicker: UIViewControllerRepresentable {
     @Binding var images: [UIImage]
-    @Environment(\.presentationMode) var presentationMode
-    var maxSelection: Int
-    
+    var maxSelection: Int = 3  // Allow up to 3 images by default
+
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
         var parent: MultiImagePicker
 
@@ -21,17 +20,21 @@ struct MultiImagePicker: UIViewControllerRepresentable {
         }
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-            self.parent.presentationMode.wrappedValue.dismiss()
+            picker.dismiss(animated: true)
 
-            for result in results.prefix(self.parent.maxSelection) {
+            for result in results.prefix(parent.maxSelection) {
                 if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
                     result.itemProvider.loadObject(ofClass: UIImage.self) { image, error in
                         if let uiImage = image as? UIImage {
                             DispatchQueue.main.async {
                                 self.parent.images.append(uiImage)
                             }
+                        } else if let error = error {
+                            print("Error loading image: \(error.localizedDescription)")
                         }
                     }
+                } else {
+                    print("Cannot load image for this result: \(result)")
                 }
             }
         }
@@ -43,7 +46,7 @@ struct MultiImagePicker: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = maxSelection  // Set the maximum selection limit
+        configuration.selectionLimit = maxSelection  // Set the maximum selection limit to 3
         configuration.filter = .images  // Filter to only show images
         
         let picker = PHPickerViewController(configuration: configuration)

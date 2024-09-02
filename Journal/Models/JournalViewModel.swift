@@ -73,7 +73,7 @@ class JournalViewModel: ObservableObject {
         journalEntries.sort { $0.date > $1.date }
     }
 
-    // Start a timer to check for a new day at midnight
+    // Start a timer to check for a new day and new week at midnight
     private func startDailyCheckTimer() {
         let calendar = Calendar.current
         let now = Date()
@@ -95,16 +95,26 @@ class JournalViewModel: ObservableObject {
         }
     }
 
-    // Add a new day entry if today's entry is not already present
+    // Add a new day entry if today's entry is not already present and handle new week
     private func addNewDayIfNeeded() {
         let today = Date()
         let calendar = Calendar.current
 
+        // Check if today is the first day of a new week
+        let currentWeekOfYear = calendar.component(.weekOfYear, from: today)
+
         if !journalEntries.contains(where: { calendar.isDate($0.date, inSameDayAs: today) }) {
             let newEntry = JournalEntry(date: today, text: "", emoji: "", imageFileNames: [])
             journalEntries.append(newEntry)
-            journalEntries.sort { $0.date > $1.date }
-            saveEntries()
         }
+
+        // Check if the last entry in the journal is from the previous week
+        if let lastEntry = journalEntries.last, calendar.component(.weekOfYear, from: lastEntry.date) != currentWeekOfYear {
+            // If it's a new week, ensure that the "Last Week" section updates
+            ensure30Days()
+        }
+
+        journalEntries.sort { $0.date > $1.date }
+        saveEntries()
     }
 }
